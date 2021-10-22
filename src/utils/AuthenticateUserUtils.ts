@@ -29,8 +29,6 @@ export async function getAccessToken(code: string) {
     }
   })
 
-  if(!data) console.error('getAccessToken: Data is not available', data)
-
   return data
 }
 
@@ -44,8 +42,6 @@ export async function getGithubUserData({ access_token }: IAccessTokenResponse)�
     }
   })
 
-  if(!data) console.error('getGithubUserData: Data is not available', data)
-
   return data
 }
 
@@ -56,15 +52,12 @@ async function checkIfUserExists(id: number) {
     }
   })
 
-  if(!data) console.error('getGithubUserData: Data is not available', data)
   return data
 }
 
 export async function createUser({id, avatar_url, login, name}: User) {
   const userExists = await checkIfUserExists(id)
 
-  console.log('user does not exist', userExists)
-  console.log('user is being created', {id, avatar_url, login, name})
   if(!userExists) {
     const user = await prismaClient.user.create({
       data: {
@@ -74,8 +67,6 @@ export async function createUser({id, avatar_url, login, name}: User) {
         name,
       }
     })
-
-    console.log('user was created', user)
 
     const token = sign({
       user: {
@@ -87,7 +78,6 @@ export async function createUser({id, avatar_url, login, name}: User) {
       subject: user.id,
       expiresIn: '1d'
     })
-    if(!user) console.error('createUser create: Data is not available')
 
     return { user, token }
   }
