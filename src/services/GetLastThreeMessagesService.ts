@@ -1,4 +1,4 @@
-import { getMessages, sendMessage } from '../utils'
+import { getMessages } from '../utils'
 
 export class GetLastThreeMessagesService {
   async execute() {     
