@@ -1,2 +1,2 @@
 export { createUser, getAccessToken, getGithubUserData } from './AuthenticateUserUtils'
-export { sendMessage } from './CreateMessageUtils'
+export { getMessages, sendMessage } from './MessageUtils'

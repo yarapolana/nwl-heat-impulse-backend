@@ -11,3 +11,15 @@ export async function sendMessage({ text, user_id }: { text: string, user_id: st
     }
   })
 }
+
+export async function getMessages(limit: number) {
+  return await prismaClient.message.findMany({
+    take: limit,
+    orderBy: {
+      created_at: 'desc'
+    },
+    include: {
+      user: true
+    }
+  })
+}
