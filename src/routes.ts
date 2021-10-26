@@ -10,7 +10,7 @@ const routes = Router()
 
 routes.post('/authenticate', new AuthenticateUserController().handle)
 routes.post('/messages', ensureAuthenticated, new CreateMessageController().handle)
-routes.get('/messages/latest', ensureAuthenticated, new GetLastThreeController().handle)
+routes.get('/messages/latest', new GetLastThreeController().handle)
 routes.get('/profile', ensureAuthenticated, new ProfileUserController().handle)
 
 routes.get('/github', (request, response) => {
