@@ -56,10 +56,10 @@ async function checkIfUserExists(id: number) {
 }
 
 export async function createUser({id, avatar_url, login, name}: User) {
-  const userExists = await checkIfUserExists(id)
+  let user = await checkIfUserExists(id)
 
-  if(!userExists) {
-    const user = await prismaClient.user.create({
+  if(!user) {
+    user = await prismaClient.user.create({
       data: {
         github_id: id,
         avatar_url,
@@ -67,21 +67,18 @@ export async function createUser({id, avatar_url, login, name}: User) {
         name,
       }
     })
-
-    const token = sign({
-      user: {
-        name: user.name,
-        avatar_url: user.avatar_url,
-        id: user.id,
-      }
-    }, process.env.JWT_SECRET, {
-      subject: user.id,
-      expiresIn: '1d'
-    })
-
-    return { user, token }
   }
-  if(!userExists) console.error('createUser userExists: Data is not available')
 
-  return userExists
+  const token = sign({
+    user: {
+      name: user.name,
+      avatar_url: user.avatar_url,
+      id: user.id,
+    }
+  }, process.env.JWT_SECRET, {
+    subject: user.id,
+    expiresIn: '1d'
+  })
+
+  return { user, token }
 }
